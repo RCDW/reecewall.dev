@@ -1,0 +1,35 @@
+name: ci
+
+# Runs on every PR into main. No deploy, no AWS — just proves the monorepo
+# typechecks and builds. This is the check you mark "required" on the main
+# ruleset once it has run at least once.
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Read-only: this workflow never needs to assume the AWS role or write anything.
+permissions:
+  contents: read
+
+# One run per PR; new pushes to the branch cancel the in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4   # version comes from packageManager in package.json
+
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+
+      - run: pnpm install --frozen-lockfile
+
+      # turbo build runs `tsc -b && vite build` across the workspace,
+      # so this exercises both typechecking and the production build.
+      - run: pnpm build
