@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "@reecewall/tokens/tokens.css";
+
+/* Map brand tokens into Tailwind v4 so utilities like bg-paper / text-accent work. */
+@theme {
+  --color-ink: #201d19;
+  --color-muted: #76726b;
+  --color-soft: #9a958c;
+  --color-accent: #0e5b54;
+  --color-accent-deep: #0a4640;
+  --color-paper: #fdfcf9;
+  --color-card: #f4f1ea;
+  --color-hair: #e6e1d6;
+  --color-pill-bg: #ecf3f1;
+  --color-pill-ink: #0f534c;
+  --color-warn: #993c1d;
+  --font-serif: "Lora", serif;
+  --font-sans: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background-image: radial-gradient(circle at 1px 1px, rgba(14, 91, 84, 0.04) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+@keyframes rise { to { opacity: 1; transform: none; } }
+.rise { opacity: 0; transform: translateY(8px); animation: rise 0.5s forwards; }

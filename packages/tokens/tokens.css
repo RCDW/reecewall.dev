@@ -1,0 +1,9 @@
+/* Single source of truth for the brand. Plain CSS custom properties so the
+   tokens work regardless of framework; also mapped into Tailwind @theme in the
+   web app's index.css. The river dashboard copies these same values. */
+:root{
+  --ink:#201d19; --muted:#76726b; --soft:#9a958c;
+  --accent:#0e5b54; --accent-deep:#0a4640; --forecast:#4a4ab7;
+  --paper:#fdfcf9; --card:#f4f1ea; --hair:#e6e1d6;
+  --pill-bg:#ecf3f1; --pill-ink:#0f534c; --warn:#993c1d;
+}
