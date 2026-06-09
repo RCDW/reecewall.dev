@@ -27,7 +27,8 @@ resource "aws_cloudfront_distribution" "site" {
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
     compress               = true
-    cache_policy_id        = data.aws_cloudfront_cache_policy.optimized.id
+    cache_policy_id            = data.aws_cloudfront_cache_policy.optimized.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
   }
 
   # SPA client-side routing: private S3 returns 403 for unknown keys -> serve app.
@@ -50,5 +51,27 @@ resource "aws_cloudfront_distribution" "site" {
     acm_certificate_arn      = aws_acm_certificate_validation.site.certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
+  }
+}
+
+resource "aws_cloudfront_response_headers_policy" "security" {
+  name = "${replace(var.domain_name, ".", "-")}-security-headers"
+
+  security_headers_config {
+    strict_transport_security {
+      access_control_max_age_sec = 63072000
+      include_subdomains         = true
+      preload                    = false
+      override                   = true
+    }
+    content_type_options { override = true }
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
+    }
+    referrer_policy {
+      referrer_policy = "strict-origin-when-cross-origin"
+      override        = true
+    }
   }
 }
