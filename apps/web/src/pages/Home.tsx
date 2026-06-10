@@ -5,13 +5,16 @@ export default function Home() {
   return (
     <div className="pt-14">
       <header className="rise">
-        <h1 className="font-serif text-4xl font-semibold leading-tight">Reece Wall</h1>
+        <h1 className="font-serif text-4xl font-semibold leading-tight">
+          Reece Wall
+        </h1>
         <p className="mt-2 text-[12px] font-semibold uppercase tracking-[2.4px] text-accent">
           {cv.tagline}
         </p>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[#3a3631]">
-          I build reliable data pipelines and the interfaces that make them legible —
-          from Azure and Databricks at work to live, queryable projects of my own.
+          I build reliable data pipelines and the interfaces that make them
+          legible — from Azure and Databricks at work to live, queryable
+          projects of my own.
         </p>
       </header>
 
@@ -33,7 +36,9 @@ export default function Home() {
                 </h3>
                 <StatusBadge status={p.status} />
               </div>
-              <p className="mt-2 text-[13px] leading-relaxed text-muted">{p.blurb}</p>
+              <p className="mt-2 text-[13px] leading-relaxed text-muted">
+                {p.blurb}
+              </p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {p.tags.map((t) => (
                   <Pill key={t}>{t}</Pill>

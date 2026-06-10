@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  id-token: write      # OIDC — assume the AWS role, no stored keys
+  id-token: write # OIDC — assume the AWS role, no stored keys
   contents: read
 
 concurrency:

@@ -10,9 +10,15 @@ function Nav() {
         Reece&nbsp;Wall
       </Link>
       <div className="flex gap-5 text-[13.5px] text-[#5f5b54]">
-        <Link to="/" className="hover:text-accent">Work</Link>
-        <Link to="/cv" className="hover:text-accent">CV</Link>
-        <Link to="/about" className="hover:text-accent">About</Link>
+        <Link to="/" className="hover:text-accent">
+          Work
+        </Link>
+        <Link to="/cv" className="hover:text-accent">
+          CV
+        </Link>
+        <Link to="/about" className="hover:text-accent">
+          About
+        </Link>
       </div>
     </nav>
   );
@@ -30,7 +36,8 @@ export default function App() {
         </Routes>
       </main>
       <footer className="mx-auto max-w-3xl px-6 pb-12 text-center text-[11px] text-soft">
-        Built with Vite · React · Tailwind · deployed to AWS via Terraform & GitHub Actions
+        Built with Vite · React · Tailwind · deployed to AWS via Terraform &
+        GitHub Actions
       </footer>
     </div>
   );
