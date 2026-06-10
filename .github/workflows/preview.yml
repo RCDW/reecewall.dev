@@ -1,0 +1,104 @@
+name: preview
+
+# Deploys a per-PR preview to pr-N.preview.reecewall.dev. Deliberately NOT
+# paths-filtered (unlike deploy.yml): a preview's value is "review rendered
+# reality", which applies even to PRs that only need a does-it-still-render
+# check — and it makes every PR, including this workflow's own, self-testing.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  id-token: write # OIDC — assume the preview role (no stored keys)
+  contents: read
+  pull-requests: write # post/update the preview-URL comment
+
+# One deploy per PR; a new push supersedes the in-flight run.
+concurrency:
+  group: preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    # Fork PRs get no OIDC token, so the deploy can't authenticate. Skip them
+    # cleanly rather than failing — own-repo branches only.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+
+      - run: pnpm install --frozen-lockfile
+
+      # Built with the default Vite base ("/"). The CloudFront function applies
+      # the per-PR prefix at the edge, so the build needs no per-PR config.
+      - run: pnpm build
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.PREVIEW_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      # Same cache strategy as prod: hashed assets immutable, index.html never
+      # cached. Scoped to this PR's prefix; --delete only affects pr-N/.
+      - name: Sync assets to pr-${{ github.event.number }}/
+        run: |
+          aws s3 sync apps/web/dist "s3://${{ vars.PREVIEW_BUCKET }}/pr-${{ github.event.number }}" \
+            --delete --cache-control "public,max-age=31536000,immutable" \
+            --exclude index.html
+
+      - name: Upload index.html (no-cache)
+        run: |
+          aws s3 cp apps/web/dist/index.html "s3://${{ vars.PREVIEW_BUCKET }}/pr-${{ github.event.number }}/index.html" \
+            --cache-control "no-cache"
+
+      - name: Invalidate this PR's path
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.PREVIEW_DISTRIBUTION_ID }}" \
+            --paths "/pr-${{ github.event.number }}/*"
+
+      # One sticky comment per PR, updated in place (found via the hidden
+      # marker) so repeated pushes don't spam the thread. Uses the built-in
+      # GITHUB_TOKEN — first-party action, no third-party trust surface.
+      - name: Comment preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.issue.number;
+            const url = `https://pr-${pr}.preview.reecewall.dev`;
+            const marker = '<!-- preview-url -->';
+            const body = [
+              marker,
+              '🚀 **Preview deployed**',
+              '',
+              `**${url}**`,
+              '',
+              `Commit \`${context.sha.slice(0, 7)}\` · updated ${new Date().toUTCString()}`,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr,
+                body,
+              });
+            }
