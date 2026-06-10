@@ -29,7 +29,8 @@ jobs:
         with: { node-version: 22, cache: pnpm }
 
       - run: pnpm install --frozen-lockfile
-
+      - run: pnpm lint
+      - run: pnpm format:check
       # turbo build runs `tsc -b && vite build` across the workspace,
       # so this exercises both typechecking and the production build.
       - run: pnpm build
