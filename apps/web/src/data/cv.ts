@@ -51,15 +51,54 @@ export const cv: CVData = {
     },
   ],
   skills: [
-    { group: "Cloud & Data Engineering", items: ["Azure Data Factory", "Databricks", "PySpark / Spark SQL", "Azure Synapse", "ETL / ELT", "Data Modelling", "dbt", "DuckDB"] },
-    { group: "Languages", items: ["SQL / T-SQL", "Python", "PowerShell", "DAX", "TypeScript", "R"] },
-    { group: "BI & Reporting", items: ["Power BI", "Power Query", "Power Automate"] },
-    { group: "Tooling", items: ["Git", "GitHub Actions", "Terraform", "AWS S3 / CloudFront", "Agile"] },
+    {
+      group: "Cloud & Data Engineering",
+      items: [
+        "Azure Data Factory",
+        "Databricks",
+        "PySpark / Spark SQL",
+        "Azure Synapse",
+        "ETL / ELT",
+        "Data Modelling",
+        "dbt",
+        "DuckDB",
+      ],
+    },
+    {
+      group: "Languages",
+      items: ["SQL / T-SQL", "Python", "PowerShell", "DAX", "TypeScript", "R"],
+    },
+    {
+      group: "BI & Reporting",
+      items: ["Power BI", "Power Query", "Power Automate"],
+    },
+    {
+      group: "Tooling",
+      items: [
+        "Git",
+        "GitHub Actions",
+        "Terraform",
+        "AWS S3 / CloudFront",
+        "Agile",
+      ],
+    },
   ],
   education: [
-    { award: "BSc (Hons) Mathematics", place: "University of Nottingham", year: "2013–2016" },
-    { award: "BCS Level 5 Diploma, Data Engineering", place: "The Chartered Institute for IT", year: "2025" },
-    { award: "BCS Level 4 Diploma, Data Analytics", place: "The Chartered Institute for IT", year: "2022" },
+    {
+      award: "BSc (Hons) Mathematics",
+      place: "University of Nottingham",
+      year: "2013–2016",
+    },
+    {
+      award: "BCS Level 5 Diploma, Data Engineering",
+      place: "The Chartered Institute for IT",
+      year: "2025",
+    },
+    {
+      award: "BCS Level 4 Diploma, Data Analytics",
+      place: "The Chartered Institute for IT",
+      year: "2022",
+    },
   ],
 };
 
@@ -85,7 +124,8 @@ export const projects: ProjectCard[] = [
   {
     slug: "word-grid-game",
     title: "Word Grid Game",
-    blurb: "The 2025 prototype that grew into Stitcher's Tower. A small, playable origin story.",
+    blurb:
+      "The 2025 prototype that grew into Stitcher's Tower. A small, playable origin story.",
     status: "origin",
     href: "https://play.reecewall.dev",
     tags: ["React", "Game"],

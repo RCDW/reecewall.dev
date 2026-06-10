@@ -15,7 +15,10 @@ export default function CV() {
             {cv.links.map((l, i) => (
               <span key={l.href}>
                 {i > 0 && " · "}
-                <a className="text-muted underline-offset-2 hover:text-accent" href={l.href}>
+                <a
+                  className="text-muted underline-offset-2 hover:text-accent"
+                  href={l.href}
+                >
                   {l.label}
                 </a>
               </span>
@@ -33,7 +36,9 @@ export default function CV() {
 
       <section className="mt-7">
         <SectionHeading>Profile</SectionHeading>
-        <p className="text-[14px] leading-relaxed text-[#3a3631]">{cv.profile}</p>
+        <p className="text-[14px] leading-relaxed text-[#3a3631]">
+          {cv.profile}
+        </p>
       </section>
 
       <section className="mt-7">
@@ -42,7 +47,10 @@ export default function CV() {
           <div key={r.title + r.start} className="mb-5">
             <div className="flex items-baseline justify-between gap-3">
               <h3 className="font-semibold">
-                {r.title} <span className="text-[13px] font-medium text-accent">· {r.org}</span>
+                {r.title}{" "}
+                <span className="text-[13px] font-medium text-accent">
+                  · {r.org}
+                </span>
               </h3>
               <span className="whitespace-nowrap text-[11px] text-soft">
                 {r.start} – {r.end}
@@ -57,7 +65,10 @@ export default function CV() {
             )}
             <ul className="mt-2 space-y-1.5">
               {r.bullets.map((b, i) => (
-                <li key={i} className="relative pl-3.5 text-[13.5px] leading-relaxed text-[#36322d]">
+                <li
+                  key={i}
+                  className="relative pl-3.5 text-[13.5px] leading-relaxed text-[#36322d]"
+                >
                   <span className="absolute left-0 top-2.5 h-0.5 w-1.5 rounded bg-accent" />
                   {b}
                 </li>
@@ -87,7 +98,9 @@ export default function CV() {
           <SectionHeading>Education</SectionHeading>
           {cv.education.map((e) => (
             <div key={e.award} className="mb-3">
-              <p className="text-[14px] font-semibold leading-snug">{e.award}</p>
+              <p className="text-[14px] font-semibold leading-snug">
+                {e.award}
+              </p>
               <p className="text-[12px] text-muted">{e.place}</p>
               <p className="text-[11px] text-soft">{e.year}</p>
             </div>
