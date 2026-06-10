@@ -38,7 +38,7 @@ jobs:
       # the per-PR prefix at the edge, so the build needs no per-PR config.
       - run: pnpm build
 
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.PREVIEW_DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
