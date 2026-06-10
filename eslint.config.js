@@ -35,5 +35,13 @@ export default tseslint.config(
     },
   },
 
+  {
+    // Repo tooling scripts run under Node, not the browser.
+    files: ["scripts/**/*.{js,mjs,cjs}"],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+  },
+
   prettier, // must be last — turns off formatting rules so Prettier owns layout
 );
