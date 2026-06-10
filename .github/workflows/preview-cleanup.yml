@@ -1,0 +1,64 @@
+name: preview-cleanup
+
+# Fires when a PR is closed (merged or not) and tears down its preview.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  id-token: write # OIDC — assume the preview role
+  contents: read
+  pull-requests: write # update the sticky comment to "removed"
+
+# Never cancel a teardown mid-flight.
+concurrency:
+  group: preview-cleanup-${{ github.event.number }}
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    # Fork PRs never deployed a preview (no OIDC token), so nothing to clean.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.PREVIEW_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      # The trailing slash is load-bearing: `aws s3 rm` does a literal prefix
+      # match, so "pr-7" (no slash) would also delete pr-70, pr-71, ... The
+      # "pr-7/" form scopes deletion to exactly this PR. Idempotent — a no-op
+      # if the prefix is already gone or never existed.
+      - name: Remove this PR's preview
+        run: |
+          aws s3 rm "s3://${{ vars.PREVIEW_BUCKET }}/pr-${{ github.event.number }}/" --recursive
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.PREVIEW_DISTRIBUTION_ID }}" \
+            --paths "/pr-${{ github.event.number }}/*"
+
+      # Update the existing preview comment in place so the PR thread stays
+      # honest. If no preview comment exists (PR never deployed one), do
+      # nothing rather than posting a spurious "removed".
+      - name: Mark preview as removed
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.issue.number;
+            const marker = '<!-- preview-url -->';
+            const body = `${marker}\n🧹 **Preview removed** — this PR is closed.`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+            });
+            const existing = comments.find((c) => c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            }
