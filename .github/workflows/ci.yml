@@ -35,3 +35,14 @@ jobs:
       # turbo build runs `tsc -b && vite build` across the workspace,
       # so this exercises both typechecking and the production build.
       - run: pnpm build
+  peer-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with: { node-version: 22, cache: pnpm }
+      # Non-frozen, lockfile-only: re-resolves the graph and applies strict
+      # peer rules WITHOUT the frozen replay that hides the mismatch. Errors
+      # on unmet peers (react 18 + react-dom 19); writes nothing we keep.
+      - run: pnpm install --lockfile-only --strict-peer-dependencies --no-frozen-lockfile
