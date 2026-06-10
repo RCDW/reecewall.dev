@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: npm        # picks up the pnpm workspace from the root lockfile
+  - package-ecosystem: npm # picks up the pnpm workspace from the root lockfile
     directory: "/"
     schedule:
       interval: weekly
