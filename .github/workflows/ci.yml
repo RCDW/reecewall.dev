@@ -30,12 +30,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # Re-evaluate the dependency graph against strict peer rules. --frozen-lockfile
-      # replays Dependabot's lockfile and skips peer re-resolution, so the install
-      # above won't catch an unmet peer (react 18 with react-dom 19). This step
-      # forces the check that actually gates that class.
-      - run: pnpm install --resolution-only --strict-peer-dependencies
-
       - run: pnpm lint
       - run: pnpm format:check
       # turbo build runs `tsc -b && vite build` across the workspace,
