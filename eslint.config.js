@@ -9,7 +9,7 @@ import prettier from "eslint-config-prettier";
 // Plugin export shapes are version-sensitive in flat config — pin the
 // versions listed in package.json and this resolves cleanly.
 export default tseslint.config(
-  { ignores: ["**/dist/**", "**/node_modules/**", "**/.turbo/**"] },
+  { ignores: ["**/dist/**", "**/node_modules/**", "**/.turbo/**", "infra/**"] },
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
