@@ -1,0 +1,5 @@
+# Fail installs on peer-dependency mismatches (e.g. react 18 with react-dom 19)
+# instead of resolving them with a warning. Applies locally and in CI — the
+# `pnpm install --frozen-lockfile` step in ci.yml becomes the gate that stops
+# this class of breakage reaching production.
+strict-peer-dependencies=true

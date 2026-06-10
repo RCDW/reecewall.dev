@@ -28,6 +28,8 @@ jobs:
       - uses: actions/setup-node@v6
         with: { node-version: 22, cache: pnpm }
 
+      # --frozen-lockfile + strict-peer-dependencies (.npmrc) fails the build on
+      # peer mismatches (e.g. react 18 with react-dom 19) before they reach prod.
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm format:check
