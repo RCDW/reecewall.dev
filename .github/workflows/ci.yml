@@ -42,3 +42,29 @@ jobs:
       # turbo build runs `tsc -b && vite build` across the workspace,
       # so this exercises both typechecking and the production build.
       - run: pnpm build
+
+  # Catches the failure class build can't: a bundle that compiles and serves
+  # 200s but never mounts (blank #root, no console error) — it has reached prod
+  # twice. Builds, serves the production build with `vite preview`, then loads
+  # it in headless Chromium and asserts React actually mounted. Separate job so
+  # it's independently meaningful and runs in parallel with build.
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with: { node-version: 22, cache: pnpm }
+
+      - run: pnpm install --frozen-lockfile
+
+      # The smoke test serves the production build, so it must exist first.
+      - run: pnpm build
+
+      # Only the one browser the test uses; --with-deps adds the system libs
+      # Chromium needs on the runner.
+      - run: pnpm --filter @reecewall/web exec playwright install --with-deps chromium
+
+      - run: pnpm --filter @reecewall/web test:e2e
