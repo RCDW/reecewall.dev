@@ -43,7 +43,12 @@ data "aws_iam_policy_document" "preview_deploy" {
     resources = ["${aws_s3_bucket.preview.arn}/*"]
   }
   statement {
-    actions   = ["cloudfront:CreateInvalidation"]
+    # CreateInvalidation flushes the PR's path on deploy; GetInvalidation lets
+    # the preview workflow wait for that invalidation to complete before it
+    # smoke-tests the deployed URL — making the deployed-preview smoke test
+    # deterministic instead of racing edge propagation. Still scoped to the
+    # preview distribution only; cannot touch production.
+    actions   = ["cloudfront:CreateInvalidation", "cloudfront:GetInvalidation"]
     resources = [aws_cloudfront_distribution.preview.arn]
   }
 }
