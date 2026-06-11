@@ -47,11 +47,11 @@ resource "aws_cloudfront_distribution" "preview" {
   }
 
   default_cache_behavior {
-    target_origin_id       = "s3-preview"
-    viewer_protocol_policy  = "redirect-to-https"
-    allowed_methods         = ["GET", "HEAD", "OPTIONS"]
-    cached_methods          = ["GET", "HEAD"]
-    compress                = true
+    target_origin_id           = "s3-preview"
+    viewer_protocol_policy     = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
+    cached_methods             = ["GET", "HEAD"]
+    compress                   = true
     cache_policy_id            = data.aws_cloudfront_cache_policy.optimized.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
 
@@ -99,6 +99,6 @@ resource "cloudflare_record" "preview_wildcard" {
 }
 
 # --- Outputs the preview workflow consumes.
-output "preview_bucket"          { value = aws_s3_bucket.preview.bucket }
+output "preview_bucket" { value = aws_s3_bucket.preview.bucket }
 output "preview_distribution_id" { value = aws_cloudfront_distribution.preview.id }
 output "preview_deploy_role_arn" { value = aws_iam_role.preview_deploy.arn }

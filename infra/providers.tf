@@ -17,4 +17,4 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "cloudflare" {}   # token from CLOUDFLARE_API_TOKEN env var
+provider "cloudflare" {} # token from CLOUDFLARE_API_TOKEN env var
