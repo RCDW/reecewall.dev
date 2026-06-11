@@ -56,11 +56,19 @@ jobs:
           aws s3 cp apps/web/dist/index.html "s3://${{ vars.PREVIEW_BUCKET }}/pr-${{ github.event.number }}/index.html" \
             --cache-control "no-cache"
 
-      - name: Invalidate this PR's path
+      # Wait for the invalidation to actually complete, not just submit it, so
+      # the smoke-preview job (needs: deploy-preview) hits live content and not
+      # a stale edge cache. This is what makes the deployed-URL smoke test
+      # deterministic rather than racing propagation.
+      - name: Invalidate this PR's path and wait
         run: |
-          aws cloudfront create-invalidation \
+          id=$(aws cloudfront create-invalidation \
             --distribution-id "${{ vars.PREVIEW_DISTRIBUTION_ID }}" \
-            --paths "/pr-${{ github.event.number }}/*"
+            --paths "/pr-${{ github.event.number }}/*" \
+            --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "${{ vars.PREVIEW_DISTRIBUTION_ID }}" \
+            --id "$id"
 
       # One sticky comment per PR, updated in place (found via the hidden
       # marker) so repeated pushes don't spam the thread. Uses the built-in
@@ -102,3 +110,33 @@ jobs:
                 body,
               });
             }
+
+  # Smoke-test the *deployed* preview — the real CloudFront edge, S3, and
+  # per-PR routing — the last gate before prod. `needs: deploy-preview` means
+  # this only runs after the deploy and its invalidation-wait succeed, so the
+  # content is provably live (no propagation race). Same Playwright spec as the
+  # build-job smoke, pointed at the preview URL via SMOKE_BASE_URL. Skipped on
+  # fork PRs automatically: deploy-preview is skipped there, so this is too.
+  smoke-preview:
+    needs: deploy-preview
+    runs-on: ubuntu-latest
+    # Only needs to load a public URL — no AWS, no PR writes.
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with: { node-version: 22, cache: pnpm }
+
+      - run: pnpm install --frozen-lockfile
+
+      # No build/serve here — we test the already-deployed artifact.
+      - run: pnpm --filter @reecewall/web exec playwright install --with-deps chromium
+
+      - name: Smoke-test the deployed preview
+        env:
+          SMOKE_BASE_URL: https://pr-${{ github.event.number }}.preview.reecewall.dev
+        run: pnpm --filter @reecewall/web test:e2e
