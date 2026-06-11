@@ -2,6 +2,9 @@ node_modules/
 dist/
 .turbo/
 *.log
+# Playwright (smoke test) outputs
+test-results/
+playwright-report/
 .env
 .env.*
 !.env.example

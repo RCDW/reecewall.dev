@@ -36,8 +36,13 @@ export default tseslint.config(
   },
 
   {
-    // Repo tooling scripts run under Node, not the browser.
-    files: ["scripts/**/*.{js,mjs,cjs}"],
+    // Repo tooling scripts and the Playwright config/specs run under Node, not
+    // the browser (e.g. process.env), so give them Node globals.
+    files: [
+      "scripts/**/*.{js,mjs,cjs}",
+      "apps/web/playwright.config.ts",
+      "apps/web/e2e/**/*.ts",
+    ],
     languageOptions: {
       globals: { ...globals.node },
     },
