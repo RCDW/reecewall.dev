@@ -4,6 +4,6 @@ terraform {
     key          = "reecewall-dev/terraform.tfstate"
     region       = "eu-west-2"
     encrypt      = true
-    use_lockfile = true   # native S3 locking, no DynamoDB needed (TF 1.10+)
+    use_lockfile = true # native S3 locking, no DynamoDB needed (TF 1.10+)
   }
 }

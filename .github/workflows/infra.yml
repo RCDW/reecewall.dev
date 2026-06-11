@@ -1,0 +1,60 @@
+name: infra
+
+# Quality + security gates for the Terraform in infra/. Path-filtered so it
+# only runs when infrastructure changes. All three tools are STATIC ANALYSIS of
+# the .tf files: this workflow never runs `terraform apply`, never assumes an
+# AWS role, and creates nothing. It adds checks only.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - ".github/workflows/infra.yml"
+  workflow_dispatch: {}
+
+# Static analysis only — no cloud credentials, no writes.
+permissions:
+  contents: read
+
+concurrency:
+  group: infra-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  terraform-quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.5"
+
+      # Canonical formatting. The tree was reformatted once to adopt this, so
+      # any drift from `terraform fmt` now fails the PR. Pinned terraform
+      # version keeps fmt output identical to what the repo was formatted with.
+      - run: terraform fmt -check -recursive
+
+      # Terraform-level linting (deprecated syntax, unused declarations, missing
+      # docs, naming) via the bundled language ruleset — no cloud plugins, so no
+      # network or credentials. Config in infra/.tflint.hcl.
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.63.1
+      - run: tflint --init
+      - run: tflint
+
+      # IaC misconfiguration scan. Installed from a pinned official release
+      # rather than a third-party action, to keep the supply-chain surface small
+      # and the version identical to what was validated locally. Findings
+      # intentionally accepted for this static-site context live in
+      # infra/.trivyignore; this fails the PR on any NEW misconfiguration.
+      - name: Install Trivy (pinned)
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/v0.71.0/contrib/install.sh \
+            | sh -s -- -b "$HOME/.local/bin" v0.71.0
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: trivy config --exit-code 1 --ignorefile .trivyignore .
