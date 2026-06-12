@@ -5,6 +5,8 @@ dist/
 # Playwright (smoke test) outputs
 test-results/
 playwright-report/
+# Lighthouse CI run output
+.lighthouseci/
 .env
 .env.*
 !.env.example
