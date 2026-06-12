@@ -6,6 +6,16 @@ updates:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
+      # Bump the react runtime and its types together — majors included — so a
+      # react-dom major can never ship without react again (see ADR 0001; this
+      # split blanked production once). Listed first so the react family is
+      # claimed here before the catch-all minor/patch group below.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
       minor-and-patch:
         update-types: ["minor", "patch"]
   - package-ecosystem: github-actions
