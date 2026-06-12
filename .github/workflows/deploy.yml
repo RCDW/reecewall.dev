@@ -4,15 +4,23 @@ on:
   push:
     branches: [main]
     paths: ["apps/**", "packages/**", "package.json", "pnpm-lock.yaml"]
-  workflow_dispatch: {}
+  workflow_dispatch: {} # manual "deploy current main" — ignores the paths filter
 
 permissions:
   id-token: write # OIDC — assume the AWS role, no stored keys
   contents: read
 
+# Serialise deploys and never cancel one mid-flight. A deploy is not atomic
+# (sync assets with --delete → upload index.html → invalidate), so cancelling it
+# can leave prod in a broken half-state, or cancel a good run in favour of a
+# newer one that then fails — both leave prod behind main, which has happened.
+# With cancel-in-progress false a running deploy always finishes; GitHub keeps
+# only the newest queued run, so prod converges on the latest main. To force a
+# redeploy (e.g. a build-affecting change the paths filter missed), use the
+# workflow_dispatch above.
 concurrency:
   group: deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build-deploy:
