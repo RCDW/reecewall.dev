@@ -9,6 +9,10 @@ test-results/
 playwright-report/
 # Lighthouse CI run output
 .lighthouseci/
+# Generated CV documents — built from apps/web/src/data/cv.ts by `pnpm cv:generate`
+# (locally for dev, in CI for deploy). Never committed; the data is the source.
+apps/web/public/Reece_Wall_CV_Engineer.pdf
+apps/web/public/Reece_Wall_CV_ATS.docx
 .env
 .env.*
 !.env.example

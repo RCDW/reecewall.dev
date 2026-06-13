@@ -36,6 +36,15 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
+      # CV PDF + ATS .docx are generated from apps/web/src/data/cv.ts (the single
+      # source) and written into apps/web/dist so they ship with the site — never
+      # committed. The phone number lives only in this secret, injected at render.
+      - run: pnpm --filter @reecewall/web exec playwright install --with-deps chromium
+      - name: Generate CV documents
+        run: pnpm cv:generate
+        env:
+          CV_PHONE: ${{ secrets.CV_PHONE }}
+
       - uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}

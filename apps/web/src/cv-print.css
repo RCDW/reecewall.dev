@@ -1,0 +1,292 @@
+/* Print/PDF layout for the designed CV. Ported from the hand-built A4 source
+   (was .temp/Reece_Wall_CV_Engineer_editable.html); exact px/mm sizes kept
+   literal, every colour swapped to a brand token (packages/tokens/tokens.css).
+   Scoped under .cv-page so it never bleeds into the rest of the app. Consumed
+   only by the /cv/print route, which scripts/generate-cv-pdf.ts renders to PDF. */
+
+.cv-page {
+  width: 210mm;
+  min-height: 297mm;
+  /* Slightly tighter top/bottom margins than the original HTML source: this
+     route loads the real brand fonts (Poppins/Lora), which run a touch taller
+     than the unstyled fallback the source rendered in, so we reclaim ~15px to
+     keep the CV on a single A4 page. */
+  padding: 8mm 14mm 5mm 14mm;
+  margin: 0 auto;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Poppins", sans-serif;
+  font-size: 10.2px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.cv-page * {
+  box-sizing: border-box;
+}
+
+/* ---------- HEADER ---------- */
+.cv-page .cv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--ink);
+}
+.cv-page .cv-name {
+  font-family: "Lora", serif;
+  font-size: 35px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  color: var(--ink);
+}
+.cv-page .cv-tagline {
+  margin-top: 7px;
+  font-size: 9.3px;
+  font-weight: 600;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.cv-page .cv-contact {
+  text-align: right;
+  font-size: 8.7px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.cv-page .cv-contact .cv-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.cv-page .cv-contact svg {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+.cv-page .cv-contact a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+/* ---------- LAYOUT ---------- */
+.cv-page .cv-body {
+  display: grid;
+  grid-template-columns: 1fr 0.52fr;
+  gap: 26px;
+  margin-top: 14px;
+}
+.cv-page .cv-col-r {
+  border-left: 1px solid var(--hair);
+  padding-left: 22px;
+}
+
+/* ---------- SECTION ---------- */
+.cv-page .cv-sec {
+  margin-bottom: 15px;
+}
+.cv-page .cv-sec:last-child {
+  margin-bottom: 0;
+}
+.cv-page .cv-sec-h {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 9px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cv-page .cv-sec-h::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--hair);
+}
+.cv-page .cv-profile {
+  color: var(--prose);
+  font-size: 10.2px;
+  line-height: 1.7;
+}
+
+/* ---------- EXPERIENCE ---------- */
+.cv-page .cv-job {
+  margin-bottom: 12px;
+}
+.cv-page .cv-job:last-child {
+  margin-bottom: 0;
+}
+.cv-page .cv-job-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.cv-page .cv-job-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cv-page .cv-job-co {
+  font-size: 9.4px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.cv-page .cv-job-dates {
+  font-size: 8.5px;
+  color: var(--soft);
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.cv-page .cv-stack {
+  margin: 5px 0 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.cv-page .cv-tag {
+  font-size: 7.6px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: var(--pill-ink);
+  background: var(--pill-bg);
+  padding: 1.5px 6px;
+  border-radius: 20px;
+  line-height: 1.5;
+}
+.cv-page ul.cv-bul {
+  list-style: none;
+}
+.cv-page ul.cv-bul li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 4.5px;
+  font-size: 10px;
+  line-height: 1.56;
+  color: var(--prose-strong);
+}
+.cv-page ul.cv-bul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6.5px;
+  width: 5px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+.cv-page .cv-earlier {
+  font-size: 8.9px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.cv-page .cv-earlier strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- RIGHT COLUMN ---------- */
+.cv-page .cv-skillgroup {
+  margin-bottom: 13px;
+}
+.cv-page .cv-skillgroup:last-child {
+  margin-bottom: 0;
+}
+.cv-page .cv-skill-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin-bottom: 5px;
+}
+.cv-page .cv-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.cv-page .cv-pill {
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--pill-ink);
+  background: var(--pill-bg);
+  padding: 2.5px 8px;
+  border-radius: 20px;
+  line-height: 1.45;
+}
+.cv-page .cv-edu {
+  margin-bottom: 12px;
+}
+.cv-page .cv-edu:last-child {
+  margin-bottom: 0;
+}
+.cv-page .cv-edu-deg {
+  font-size: 9.8px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.cv-page .cv-edu-meta {
+  font-size: 8.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.cv-page .cv-edu-date {
+  font-size: 8px;
+  color: var(--soft);
+  margin-top: 1px;
+  letter-spacing: 0.3px;
+}
+.cv-page .cv-strength {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 6px;
+  font-size: 9.4px;
+  line-height: 1.45;
+  color: var(--prose-strong);
+}
+.cv-page .cv-strength::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.cv-page .cv-metric {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 9px;
+}
+.cv-page .cv-metric-num {
+  font-family: "Lora", serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.05;
+  flex: 0 0 60px;
+  white-space: nowrap;
+}
+.cv-page .cv-metric-lab {
+  font-size: 8.6px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.cv-page .cv-footer {
+  margin-top: 9px;
+  padding-top: 6px;
+  border-top: 1px solid var(--hair);
+  font-size: 8.3px;
+  color: var(--soft);
+  letter-spacing: 0.4px;
+  text-align: center;
+}

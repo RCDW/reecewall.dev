@@ -42,6 +42,17 @@ export function StatusBadge({ status }: { status: string }) {
   );
 }
 
+export function Metric({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="shrink-0 font-serif text-lg font-semibold leading-none text-accent">
+        {value}
+      </span>
+      <span className="text-[12px] leading-snug text-muted">{label}</span>
+    </div>
+  );
+}
+
 export function SectionHeading({ children }: { children: ReactNode }) {
   return (
     <h2 className="mb-3 flex items-center gap-3 text-[12px] font-bold uppercase tracking-[2px] text-accent">

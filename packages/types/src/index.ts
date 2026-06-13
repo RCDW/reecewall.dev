@@ -15,8 +15,13 @@ export interface CVData {
   links: { label: string; href: string }[];
   profile: string;
   roles: CVRole[];
+  // Note on earlier career, shown after the dated roles (designed CV + web only).
+  earlier?: string;
   skills: { group: string; items: string[] }[];
   education: { award: string; place: string; year: string }[];
+  // Designed CV + web only; the ATS .docx omits these.
+  strengths?: string[];
+  metrics?: { value: string; label: string }[];
 }
 export interface ProjectCard {
   slug: string;
