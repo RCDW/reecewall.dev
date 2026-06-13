@@ -6,6 +6,9 @@
   --color-ink: #201d19;
   --color-muted: #76726b;
   --color-soft: #9a958c;
+  --color-prose: #3a3631;
+  --color-prose-strong: #36322d;
+  --color-nav: #5f5b54;
   --color-accent: #0e5b54;
   --color-accent-deep: #0a4640;
   --color-paper: #fdfcf9;
@@ -14,6 +17,10 @@
   --color-pill-bg: #ecf3f1;
   --color-pill-ink: #0f534c;
   --color-warn: #993c1d;
+  --color-live-bg: #e1f5ee;
+  --color-live-ink: #0f6e56;
+  --color-live-dot: #1d9e75;
+  --color-origin-bg: #faece7;
   --font-serif: "Lora", serif;
   --font-sans: "Poppins", sans-serif;
 }
@@ -25,7 +32,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background-image: radial-gradient(
     circle at 1px 1px,
-    rgba(14, 91, 84, 0.04) 1px,
+    var(--grain) 1px,
     transparent 0
   );
   background-size: 22px 22px;

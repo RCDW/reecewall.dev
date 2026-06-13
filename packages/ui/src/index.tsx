@@ -23,9 +23,9 @@ export function Card({
 }
 
 const STATUS: Record<string, { label: string; cls: string }> = {
-  live: { label: "live", cls: "bg-[#e1f5ee] text-[#0f6e56]" },
+  live: { label: "live", cls: "bg-live-bg text-live-ink" },
   "in-dev": { label: "in development", cls: "bg-card text-muted" },
-  origin: { label: "origin · 2025", cls: "bg-[#faece7] text-warn" },
+  origin: { label: "origin · 2025", cls: "bg-origin-bg text-warn" },
 };
 
 export function StatusBadge({ status }: { status: string }) {
@@ -35,7 +35,7 @@ export function StatusBadge({ status }: { status: string }) {
       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${s.cls}`}
     >
       {status === "live" && (
-        <span className="h-1.5 w-1.5 rounded-full bg-[#1d9e75]" />
+        <span className="h-1.5 w-1.5 rounded-full bg-live-dot" />
       )}
       {s.label}
     </span>

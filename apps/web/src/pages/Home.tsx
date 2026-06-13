@@ -11,7 +11,7 @@ export default function Home() {
         <p className="mt-2 text-[12px] font-semibold uppercase tracking-[2.4px] text-accent">
           {cv.tagline}
         </p>
-        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[#3a3631]">
+        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-prose">
           I build reliable data pipelines and the interfaces that make them
           legible — from Azure and Databricks at work to live, queryable
           projects of my own.

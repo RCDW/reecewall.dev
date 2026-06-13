@@ -9,7 +9,7 @@ function Nav() {
       <Link to="/" className="font-serif text-xl font-semibold">
         Reece&nbsp;Wall
       </Link>
-      <div className="flex gap-5 text-[13.5px] text-[#5f5b54]">
+      <div className="flex gap-5 text-[13.5px] text-nav">
         <Link to="/" className="hover:text-accent">
           Work
         </Link>
