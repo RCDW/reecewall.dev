@@ -36,9 +36,7 @@ export default function CV() {
 
       <section className="mt-7">
         <SectionHeading>Profile</SectionHeading>
-        <p className="text-[14px] leading-relaxed text-[#3a3631]">
-          {cv.profile}
-        </p>
+        <p className="text-[14px] leading-relaxed text-prose">{cv.profile}</p>
       </section>
 
       <section className="mt-7">
@@ -67,7 +65,7 @@ export default function CV() {
               {r.bullets.map((b, i) => (
                 <li
                   key={i}
-                  className="relative pl-3.5 text-[13.5px] leading-relaxed text-[#36322d]"
+                  className="relative pl-3.5 text-[13.5px] leading-relaxed text-prose-strong"
                 >
                   <span className="absolute left-0 top-2.5 h-0.5 w-1.5 rounded bg-accent" />
                   {b}

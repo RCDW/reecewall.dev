@@ -5,13 +5,25 @@
   --ink: #201d19;
   --muted: #76726b;
   --soft: #9a958c;
+  --prose: #3a3631; /* body copy */
+  --prose-strong: #36322d; /* denser body copy, e.g. CV bullets */
+  --nav: #5f5b54; /* top-nav links */
   --accent: #0e5b54;
   --accent-deep: #0a4640;
   --forecast: #4a4ab7;
   --paper: #fdfcf9;
+  --grain: color-mix(
+    in srgb,
+    var(--accent) 4%,
+    transparent
+  ); /* paper-grain dot: accent at 4% */
   --card: #f4f1ea;
   --hair: #e6e1d6;
   --pill-bg: #ecf3f1;
   --pill-ink: #0f534c;
   --warn: #993c1d;
+  --live-bg: #e1f5ee; /* "live" status badge background */
+  --live-ink: #0f6e56; /* "live" status badge text */
+  --live-dot: #1d9e75; /* "live" status pulse dot */
+  --origin-bg: #faece7; /* "origin" status badge background */
 }

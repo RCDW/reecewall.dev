@@ -12,7 +12,7 @@ export default function About() {
           className="h-28 w-28 shrink-0 rounded-2xl border border-hair object-cover"
           onError={(e) => (e.currentTarget.style.display = "none")}
         />
-        <div className="max-w-xl text-[15px] leading-relaxed text-[#3a3631]">
+        <div className="max-w-xl text-[15px] leading-relaxed text-prose">
           <p>
             I'm a data engineer in Nottingham, working across the Boots UK
             supply chain — pipelines, forecasting and replenishment systems at
