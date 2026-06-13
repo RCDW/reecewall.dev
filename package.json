@@ -9,6 +9,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "cv:generate": "tsx scripts/generate-cv-pdf.ts && tsx scripts/generate-cv-docx.ts",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "docx": "^9.7.1",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.10.1",
@@ -36,6 +38,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "prettier": "^3.3.3",
+    "tsx": "^4.22.4",
     "turbo": "^2.9.17",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.11.0"

@@ -67,4 +67,10 @@ jobs:
       # Chromium needs on the runner.
       - run: pnpm --filter @reecewall/web exec playwright install --with-deps chromium
 
+      # Prove the CV PDF + ATS .docx still generate from the data (the print
+      # route renders, docx builds). No CV_PHONE here — generation must work
+      # without it; the phone is only injected at deploy. Catches a broken print
+      # route or generator before merge.
+      - run: pnpm cv:generate
+
       - run: pnpm --filter @reecewall/web test:e2e
