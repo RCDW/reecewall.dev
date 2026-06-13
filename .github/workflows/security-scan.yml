@@ -56,8 +56,8 @@ jobs:
           chmod +x osv-scanner
 
       # Reads pnpm-lock.yaml statically — no pnpm install / node setup needed.
-      # Auto-discovers /osv-scanner.toml (the explicit baseline) in the repo
-      # root. Exits non-zero on any un-accepted vuln, which fails the job: that
-      # exit code IS the gate.
+      # If an osv-scanner.toml baseline is ever added in the repo root it is
+      # auto-discovered; today there is none — the tree is clean. Exits non-zero
+      # on any un-accepted vuln, which fails the job: that exit code IS the gate.
       - name: Scan committed lockfile against OSV
         run: ./osv-scanner scan source --lockfile=pnpm-lock.yaml
