@@ -1,0 +1,63 @@
+name: security-scan
+
+# An independent vulnerability gate, complementary to Dependabot — NOT a
+# replacement for it.
+#
+# Dependabot watches the GitHub advisory DB and raises *update* PRs: it tells me
+# an update exists. This job answers a different question: does what is
+# *currently committed* (the pnpm-lock.yaml state) contain a known vuln? It
+# scans against Google's OSV database — a second, independent source with
+# broader ecosystem coverage — and fails the build on an un-accepted finding.
+#
+# osv-scanner has no native severity-threshold flag, so the gate is "any known
+# vuln fails". Findings triaged as not-currently-actionable (e.g. dev-server
+# CVEs that never run in our static-hosted prod) are accepted explicitly, with a
+# reason and a review date, in /osv-scanner.toml — never silently baselined.
+#
+# Kept as its own workflow (not folded into ci.yml) so it's an independently
+# legible check, and so it can also run on a schedule.
+on:
+  pull_request:
+    branches: [main]
+  # Catches vulns newly disclosed against UNCHANGED, already-committed deps — a
+  # PR-only gate never re-evaluates code nobody is touching. 12:30 UTC Mondays.
+  schedule:
+    - cron: "30 12 * * 1"
+  workflow_dispatch: {}
+
+# Read-only: this job only reads the lockfile. No SARIF upload, so no
+# security-events write surface.
+permissions:
+  contents: read
+
+# One run per ref; new pushes to a PR branch cancel the in-flight run.
+concurrency:
+  group: security-scan-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  osv-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      # Run the osv-scanner CLI directly rather than the reusable workflow: it
+      # keeps this check legible (the exact command and output are right here)
+      # and avoids the SARIF/code-scanning permission surface we don't need.
+      # The binary is pinned to a release version AND verified against the
+      # published SHA-256 before it runs — a tampered download fails closed.
+      - name: Download and verify osv-scanner
+        run: |
+          version=v2.3.8
+          sha256=bc98e15319ed0d515e3f9235287ba53cdc5535d576d24fd573978ecfe9ab92dc
+          curl -fsSL -o osv-scanner \
+            "https://github.com/google/osv-scanner/releases/download/${version}/osv-scanner_linux_amd64"
+          echo "${sha256}  osv-scanner" | sha256sum --check --strict
+          chmod +x osv-scanner
+
+      # Reads pnpm-lock.yaml statically — no pnpm install / node setup needed.
+      # Auto-discovers /osv-scanner.toml (the explicit baseline) in the repo
+      # root. Exits non-zero on any un-accepted vuln, which fails the job: that
+      # exit code IS the gate.
+      - name: Scan committed lockfile against OSV
+        run: ./osv-scanner scan source --lockfile=pnpm-lock.yaml
