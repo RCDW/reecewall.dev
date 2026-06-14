@@ -89,7 +89,7 @@ resource "aws_s3_bucket_policy" "preview" {
 }
 
 # --- DNS: one wildcard record covers every PR subdomain. Reuses the zone
-#     looked up in cloudfare.tf.
+#     looked up in cloudflare.tf.
 resource "cloudflare_record" "preview_wildcard" {
   zone_id = data.cloudflare_zone.site.id
   name    = "*.preview"

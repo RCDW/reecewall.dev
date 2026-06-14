@@ -21,3 +21,4 @@ Short records of significant, hard-to-reverse decisions and _why_ they were made
 - [0004 — IaC: Terraform over AWS CDK / CloudFormation](0004-terraform-over-cdk.md)
 - [0005 — Per-PR preview environments via subdomain isolation](0005-preview-environment-isolation.md)
 - [0006 — Guarding the react/react-dom major-mismatch class](0006-peer-dependency-gate.md)
+- [0007 — Per-route prerender: headless Chromium over vite-react-ssg](0007-prerender-over-vite-react-ssg.md)

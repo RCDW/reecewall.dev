@@ -15,7 +15,8 @@ Legend: **[universal]** applies anywhere · **[web]** specific to a frontend ·
       anything else. Without it, Windows `core.autocrlf` leaves the working tree
       CRLF while the repo stores LF, which produces phantom Prettier/format
       failures that don't reproduce on Linux CI. (This repo learned that the
-      hard way — it still has no `.gitattributes`.)
+      hard way: `.gitattributes` was added late, after the phantom failures kept
+      surfacing — do it on commit one instead.)
 - [ ] **[universal]** `.gitignore` excludes build output, `node_modules`, env
       files, and **all IaC state/secrets** (`*.tfstate*`, `*.tfvars`,
       `.terraform/`). Verify with `git check-ignore`.
@@ -122,6 +123,49 @@ build can be green and still render a blank page.
 - [ ] **[universal]** `docs/adr/` with a README + template; record every
       hard-to-reverse decision, honestly (real reasons, not impressive ones).
       ADRs are immutable once accepted — supersede, don't rewrite.
+
+## 10. Reusable assets — what to carry from this repo
+
+Standing up a new repo (e.g. `river-levels`) shouldn't restart from zero. Carry
+the posture across deliberately: copy what's truly generic verbatim, adapt what
+encodes a web-specific choice, and let the new repo write its own decisions.
+
+- [ ] **Copy verbatim (universal):**
+  - `.gitattributes` (item 0 — first commit).
+  - `docs/adr/README.md` + `docs/adr/template.md` (the ADR scaffolding and
+    conventions).
+  - This checklist itself, as the new repo's setup runbook.
+  - The never-cancel deploy pattern (`concurrency: cancel-in-progress: false` +
+    a `workflow_dispatch` safety net) from `deploy.yml`.
+  - SHA-pinned actions with `# vN` comments and explicit minimal
+    `permissions:` on every workflow.
+  - The OSV gate shape (`security-scan.yml` + a dated, documented
+    `osv-scanner.toml`).
+  - The infra static-analysis gate (`fmt -check` + `tflint` + Trivy) with
+    documented `.trivyignore` / `.tflint.hcl` baselines. **Note:** the `infra`
+    workflow is static analysis only — `terraform apply` is run by a human, not
+    in CI.
+
+- [ ] **Adapt (re-author for the new repo):**
+  - The OIDC deploy-role pattern — per-environment, least-privilege; a preview
+    role must never reach prod.
+  - The Dependabot config — swap ecosystems (e.g. `pip` for the Python deps,
+    keep `github-actions`).
+  - Project-level working notes / architecture overview, as templates.
+
+- [ ] **Which ADRs port:** `0001` (dependency automation — group `dbt-core` with
+      its adapter so majors bump together), `0003` (static hosting — a dashboard's
+      `web/` is static too), `0004` (Terraform + remote state), `0005` (preview
+      environments → a per-PR scoped schema/dataset, the data analog of subdomain
+      isolation). **Web-only, don't port:** `0002` (Vite over Next) and `0006` (the
+      react/react-dom peer gate) — though the lesson behind `0006` (assert installed
+      versions, don't trust peer resolution) becomes its **own** new ADR in the data
+      repo (e.g. asserting `dbt-core`/adapter versions).
+
+- [ ] **The new repo writes its own ADRs** for its real decisions — e.g.
+      bronze append-only / medallion layering, the dbt + DuckDB / Azure hybrid, one
+      ingest module with two runners, last-known-good publish. Record the reasons
+      that actually drove them, same as here.
 
 ---
 
