@@ -9,8 +9,14 @@ function Nav({ width }: { width: string }) {
     <nav
       className={`mx-auto flex ${width} items-center justify-between px-6 pt-10`}
     >
-      <Link to="/" className="font-serif text-xl font-semibold">
-        Reece&nbsp;Wall
+      {/* Compact monogram rather than the full wordmark, so the nav doesn't
+          repeat the large page heading (which is the name) on Home/CV. */}
+      <Link
+        to="/"
+        aria-label="Reece Wall, home"
+        className="rounded-full bg-accent px-3 py-1.5 font-serif text-sm font-semibold leading-none text-paper hover:bg-accent-deep"
+      >
+        RW
       </Link>
       <div className="flex gap-5 text-[13.5px] text-nav">
         <Link to="/" className="hover:text-accent">
@@ -24,6 +30,26 @@ function Nav({ width }: { width: string }) {
         </Link>
       </div>
     </nav>
+  );
+}
+
+// Shown for any unknown path (the catch-all route below); previously these
+// rendered blank.
+function NotFound() {
+  return (
+    <div className="pt-14">
+      <h1 className="font-serif text-3xl font-semibold">Page not found</h1>
+      <p className="mt-3 text-[15px] leading-relaxed text-prose">
+        That page doesn't exist.{" "}
+        <Link
+          to="/"
+          className="text-accent underline-offset-2 hover:text-accent-deep"
+        >
+          Back to home
+        </Link>
+        .
+      </p>
+    </div>
   );
 }
 
@@ -60,6 +86,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cv" element={<CV />} />
         <Route path="/about" element={<About />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

@@ -49,8 +49,15 @@ body {
     transform: none;
   }
 }
+/* Default visible; only animate the entrance when the user hasn't asked to
+   reduce motion (otherwise reduced-motion users would be left at opacity 0). */
 .rise {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: rise 0.5s forwards;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: rise 0.5s forwards;
+  }
 }
