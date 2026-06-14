@@ -1,0 +1,12 @@
+# Normalize line endings: store everything as LF in the repo, regardless of the
+# committer's OS. Without this, Windows core.autocrlf leaves CRLF in the working
+# tree while the repo stores LF, producing phantom Prettier/format failures that
+# don't reproduce on Linux CI.
+* text=auto eol=lf
+
+# Binary assets: never normalize or diff as text.
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.docx binary
