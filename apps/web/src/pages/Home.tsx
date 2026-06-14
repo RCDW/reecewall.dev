@@ -13,8 +13,8 @@ export default function Home() {
         </p>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-prose">
           I build reliable data pipelines and the interfaces that make them
-          legible — from Azure and Databricks at work to live, queryable
-          projects of my own.
+          legible, from Azure and Databricks at work to live, queryable projects
+          of my own.
         </p>
       </header>
 
@@ -27,6 +27,8 @@ export default function Home() {
             <a
               key={p.slug}
               href={p.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rise group rounded-xl border border-hair bg-white p-5 transition hover:border-accent"
               style={{ animationDelay: `${i * 0.08}s` }}
             >

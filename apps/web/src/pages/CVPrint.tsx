@@ -104,7 +104,7 @@ export default function CVPrint() {
             <MailIcon />
             <span>{cv.email}</span>
           </div>
-          {cv.links.map((l) => (
+          {cv.cvLinks.map((l) => (
             <div className="cv-row" key={l.href}>
               {linkIcon(l.label)}
               <span>{stripProtocol(l.href)}</span>
@@ -219,7 +219,7 @@ export default function CVPrint() {
       </div>
 
       <footer className="cv-footer">
-        References available on request &nbsp;·&nbsp; {cv.name} — {cv.tagline}
+        References available on request &nbsp;·&nbsp; {cv.name} · {cv.tagline}
       </footer>
     </div>
   );
