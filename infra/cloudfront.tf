@@ -9,6 +9,19 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
+# Edge function: map clean, extensionless URLs to the prerendered nested
+# index.html files (SSG output). S3 OAC origins do no directory-index
+# resolution, so this owns that mapping. See router.js. Backward-compatible
+# with a single-index.html SPA build (unknown keys fall through to the 403
+# fallback below), so it is safe to apply before the prerendered build ships.
+resource "aws_cloudfront_function" "router" {
+  name    = "${replace(var.domain_name, ".", "-")}-router"
+  runtime = "cloudfront-js-2.0"
+  comment = "Map clean URLs to prerendered /<route>/index.html"
+  publish = true
+  code    = file("${path.module}/router.js")
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   default_root_object = "index.html"
@@ -29,9 +42,16 @@ resource "aws_cloudfront_distribution" "site" {
     compress                   = true
     cache_policy_id            = data.aws_cloudfront_cache_policy.optimized.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.router.arn
+    }
   }
 
-  # SPA client-side routing: private S3 returns 403 for unknown keys -> serve app.
+  # Unknown keys: private S3 returns 403 -> serve the app shell so the client
+  # router can render the route (known routes resolve to real files via the
+  # viewer-request function above; this is the fallback for everything else).
   custom_error_response {
     error_code         = 403
     response_code      = 200
