@@ -27,6 +27,8 @@ export default function Home() {
             <a
               key={p.slug}
               href={p.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rise group rounded-xl border border-hair bg-white p-5 transition hover:border-accent"
               style={{ animationDelay: `${i * 0.08}s` }}
             >

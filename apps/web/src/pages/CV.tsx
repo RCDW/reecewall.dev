@@ -12,12 +12,14 @@ export default function CV() {
           </p>
           <p className="mt-2 text-[12px] text-muted">
             {cv.location} · {cv.email} ·{" "}
-            {cv.links.map((l, i) => (
+            {cv.cvLinks.map((l, i) => (
               <span key={l.href}>
                 {i > 0 && " · "}
                 <a
                   className="text-muted underline-offset-2 hover:text-accent"
                   href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {l.label}
                 </a>
@@ -29,12 +31,14 @@ export default function CV() {
           {/* Both files are generated from this page's data at build time. */}
           <a
             href="/Reece_Wall_CV_Engineer.pdf"
+            download="Reece_Wall_CV_Engineer.pdf"
             className="rounded-lg bg-accent px-3.5 py-2 text-[12.5px] font-medium text-paper hover:bg-accent-deep"
           >
             Download PDF
           </a>
           <a
             href="/Reece_Wall_CV_ATS.docx"
+            download="Reece_Wall_CV_ATS.docx"
             className="text-[11px] text-muted underline-offset-2 hover:text-accent"
           >
             ATS version (.docx)

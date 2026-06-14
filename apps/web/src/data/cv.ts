@@ -7,9 +7,16 @@ export const cv: CVData = {
   tagline: "Data Engineer · Azure · Databricks · SQL",
   location: "Nottingham, UK",
   email: "rcdwall@gmail.com",
+  // Live-site profile links (About).
   links: [
     { label: "LinkedIn", href: "https://linkedin.com/in/reecewall" },
-    { label: "GitHub", href: "https://github.com/reecewall" },
+    { label: "GitHub", href: "https://github.com/RCDW" },
+  ],
+  // Links on the downloadable CV documents + web /cv. The site URL is the
+  // controlled entry point; GitHub is intentionally omitted for now.
+  cvLinks: [
+    { label: "LinkedIn", href: "https://linkedin.com/in/reecewall" },
+    { label: "reecewall.dev", href: "https://reecewall.dev" },
   ],
   profile:
     "Data Engineer with 5+ years in analytics and data engineering across the Boots UK supply chain, including 3+ years building and optimising ETL/ELT pipelines in Azure and Databricks. Hands-on with Databricks (PySpark / Spark SQL), Azure Data Factory and performant T-SQL, feeding a Synapse data warehouse that serves planning, forecasting and replenishment. A Mathematics graduate with a strong record of pipeline optimisation, data modelling at scale and reliable delivery on business-critical systems.",
@@ -40,7 +47,7 @@ export const cv: CVData = {
         "Power BI",
       ],
       bullets: [
-        "Built and remediated ETL/ELT pipelines in Azure Data Factory — simplifying logic, cutting load times and consolidating distinct pipelines — loading a Synapse data warehouse used across planning and replenishment.",
+        "Built and remediated ETL/ELT pipelines in Azure Data Factory (simplifying logic, cutting load times and consolidating distinct pipelines) that loaded a Synapse data warehouse used across planning and replenishment.",
         "Engineered data transformations in Databricks using Python notebooks with PySpark and Spark SQL, refining raw ingested data into clean, warehouse-ready tables.",
         "Built automated monitoring and alerting that verifies expected files land in Azure Blob Storage on time, catching ingestion failures before they reached downstream reporting.",
         "Developed PowerShell tooling to map end-to-end data lineage from blob storage to warehouse target tables, accelerating root-cause analysis.",
@@ -55,7 +62,7 @@ export const cv: CVData = {
       bullets: [
         "Built an outbound optimisation model that delivered c. 400,000 fewer warehouse pick operations per week during Peak 2021.",
         "Engineered a supplier-booking system (MS Access / VBA / Excel) used by the Seasonal and Online operations to manage inbound bookings into the Burton warehouse.",
-        "Ran statistical analysis across 1B+ records in Azure Synapse using T-SQL window and partition functions — analysis that would otherwise have been computationally infeasible.",
+        "Ran statistical analysis across 1B+ records in Azure Synapse using T-SQL window and partition functions, work that would otherwise have been computationally infeasible.",
       ],
     },
     {
@@ -117,11 +124,6 @@ export const cv: CVData = {
   ],
   education: [
     {
-      award: "BSc (Hons) Mathematics",
-      place: "University of Nottingham",
-      year: "2013–2016",
-    },
-    {
       award: "BCS Level 5 Diploma, Data Engineering",
       place: "The Chartered Institute for IT",
       year: "2025",
@@ -130,6 +132,11 @@ export const cv: CVData = {
       award: "BCS Level 4 Diploma, Data Analytics",
       place: "The Chartered Institute for IT",
       year: "2022",
+    },
+    {
+      award: "BSc (Hons) Mathematics",
+      place: "University of Nottingham",
+      year: "2013–2016",
     },
   ],
   strengths: [
@@ -158,7 +165,7 @@ export const cv: CVData = {
 export const projects: ProjectCard[] = [
   {
     slug: "river-levels",
-    title: "River Levels — live pipeline",
+    title: "River Levels: live pipeline",
     blurb:
       "A live Medallion pipeline over Environment Agency data for the River Trent. Click any point to trace it through bronze → silver → gold, in your browser.",
     status: "live",
@@ -171,7 +178,7 @@ export const projects: ProjectCard[] = [
     blurb:
       "A server-authoritative world simulation: multi-rate idempotent tick engine, append-only economy, Wilson-score discovery. Full-stack systems design.",
     status: "in-dev",
-    href: "https://github.com/reecewall/stitchers-tower",
+    href: "https://github.com/RCDW/stitchers-tower",
     tags: ["TypeScript", "Postgres", "Redis", "BullMQ"],
   },
   {

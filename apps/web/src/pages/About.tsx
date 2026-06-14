@@ -33,6 +33,8 @@ export default function About() {
                 <a
                   className="underline-offset-2 hover:text-accent"
                   href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {l.label}
                 </a>

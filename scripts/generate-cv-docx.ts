@@ -41,7 +41,7 @@ function contactLine() {
     cv.location,
     process.env.CV_PHONE,
     cv.email,
-    ...cv.links.map((l) => l.href.replace(/^https?:\/\//, "")),
+    ...cv.cvLinks.map((l) => l.href.replace(/^https?:\/\//, "")),
   ].filter(Boolean) as string[];
   return new Paragraph({
     spacing: { after: 120 },
@@ -83,7 +83,7 @@ const children: Paragraph[] = [
       spacing: { before: 120, after: 0 },
       tabStops: [{ type: TabStopType.RIGHT, position: TabStopPosition.MAX }],
       children: [
-        new TextRun({ text: `${r.title} — ${r.org}`, bold: true, size: 20 }),
+        new TextRun({ text: `${r.title}, ${r.org}`, bold: true, size: 20 }),
         new TextRun({ text: `\t${r.start} – ${r.end}`, size: 18 }),
       ],
     }),

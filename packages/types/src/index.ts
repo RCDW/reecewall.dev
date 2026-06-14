@@ -12,7 +12,10 @@ export interface CVData {
   tagline: string;
   location: string;
   email: string;
+  // Profile links shown on the live site (About). The downloadable CV documents
+  // and the web /cv use cvLinks instead, so the two can differ deliberately.
   links: { label: string; href: string }[];
+  cvLinks: { label: string; href: string }[];
   profile: string;
   roles: CVRole[];
   // Note on earlier career, shown after the dated roles (designed CV + web only).
