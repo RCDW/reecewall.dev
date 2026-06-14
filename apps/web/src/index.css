@@ -49,7 +49,10 @@ body {
     transform: none;
   }
 }
-/* Default visible; only animate the entrance when the user hasn't asked to
+/* The entrance animation is intentionally used on the Home/landing hero only
+   (see Home.tsx): the landing page gets a subtle reveal, while inner pages you
+   navigate to directly render immediately, with no motion.
+   Default visible; only animate the entrance when the user hasn't asked to
    reduce motion (otherwise reduced-motion users would be left at opacity 0). */
 .rise {
   opacity: 1;

@@ -56,19 +56,19 @@ function NotFound() {
 // The site shell: nav + centred column + footer. A layout route — the matched
 // child page renders into <Outlet />.
 function Shell() {
-  // The CV mirrors the downloadable A4 document, so it gets a wider column than
-  // the prose pages; nav + footer widen with it so everything stays aligned.
-  const wide = useLocation().pathname === "/cv";
-  const width = wide ? "max-w-4xl" : "max-w-3xl";
+  // The nav and footer are a fixed-width frame (max-w-4xl) on every page, so the
+  // chrome never shifts when navigating. Only the content column varies: the CV
+  // mirrors the downloadable A4 document and needs the full width, while the
+  // prose pages read better narrower.
+  const contentWidth =
+    useLocation().pathname === "/cv" ? "max-w-4xl" : "max-w-3xl";
   return (
     <div className="min-h-screen">
-      <Nav width={width} />
-      <main className={`mx-auto ${width} px-6 pb-20`}>
+      <Nav width="max-w-4xl" />
+      <main className={`mx-auto ${contentWidth} px-6 pb-20`}>
         <Outlet />
       </main>
-      <footer
-        className={`mx-auto ${width} px-6 pb-12 text-center text-[11px] text-soft`}
-      >
+      <footer className="mx-auto max-w-4xl px-6 pb-12 text-center text-[11px] text-soft">
         Built with Vite · React · Tailwind · deployed to AWS via Terraform &
         GitHub Actions
       </footer>
