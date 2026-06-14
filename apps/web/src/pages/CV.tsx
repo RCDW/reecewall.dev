@@ -42,7 +42,7 @@ export default function CV() {
         </div>
       </header>
 
-      <div className="mt-7 grid gap-7 sm:grid-cols-[1fr_0.5fr]">
+      <div className="mt-7 grid gap-7 sm:grid-cols-[1fr_0.52fr]">
         {/* ---------- LEFT: profile + experience ---------- */}
         <div>
           <section>

@@ -45,7 +45,7 @@ export function StatusBadge({ status }: { status: string }) {
 export function Metric({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="shrink-0 font-serif text-lg font-semibold leading-none text-accent">
+      <span className="w-[60px] shrink-0 whitespace-nowrap font-serif text-lg font-semibold leading-none text-accent">
         {value}
       </span>
       <span className="text-[12px] leading-snug text-muted">{label}</span>
