@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "cv:generate": "tsx scripts/generate-cv-pdf.ts && tsx scripts/generate-cv-docx.ts",
+    "prerender": "tsx scripts/prerender.ts",
     "prepare": "husky"
   },
   "lint-staged": {

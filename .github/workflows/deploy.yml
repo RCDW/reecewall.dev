@@ -45,20 +45,27 @@ jobs:
         env:
           CV_PHONE: ${{ secrets.CV_PHONE }}
 
+      # Prerender public routes to nested HTML (dist/cv/index.html, etc.) for SEO.
+      # The CloudFront router function maps clean URLs to these files.
+      - name: Prerender routes
+        run: pnpm prerender
+
       - uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      # Hashed assets cached hard; index.html never cached (instant deploys).
+      # Hashed assets cached hard; all HTML (root + prerendered routes) never
+      # cached, so deploys are instant and visitors never get a stale prerender.
       - name: Sync assets
         run: |
           aws s3 sync apps/web/dist "s3://${{ vars.SITE_BUCKET }}" \
             --delete --cache-control "public,max-age=31536000,immutable" \
-            --exclude index.html
-      - name: Upload index.html
+            --exclude "*.html"
+      - name: Upload HTML (no-cache)
         run: |
-          aws s3 cp apps/web/dist/index.html "s3://${{ vars.SITE_BUCKET }}/index.html" \
+          aws s3 cp apps/web/dist "s3://${{ vars.SITE_BUCKET }}" \
+            --recursive --exclude "*" --include "*.html" \
             --cache-control "no-cache"
       - name: Invalidate CloudFront
         run: |

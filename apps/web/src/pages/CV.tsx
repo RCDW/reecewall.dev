@@ -1,7 +1,12 @@
 import { Metric, Pill, SectionHeading } from "@reecewall/ui";
 import { cv } from "../data/cv";
+import { usePageMeta } from "../usePageMeta";
 
 export default function CV() {
+  usePageMeta(
+    "Reece Wall · CV · Data Engineer",
+    "CV of Reece Wall, a data engineer working in Azure, Databricks and SQL across the Boots UK supply chain. Download the PDF or ATS version.",
+  );
   return (
     <article className="pt-14">
       <header className="flex items-start justify-between gap-4 border-b border-ink pb-4">
