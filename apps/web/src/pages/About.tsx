@@ -15,7 +15,7 @@ export default function About() {
         <div className="max-w-xl text-[15px] leading-relaxed text-prose">
           <p>
             I'm a data engineer in Nottingham, working across the Boots UK
-            supply chain — pipelines, forecasting and replenishment systems at
+            supply chain: pipelines, forecasting and replenishment systems at
             national scale. I like problems where many sites produce live
             readings against thresholds, and where small upstream changes
             propagate downstream.
