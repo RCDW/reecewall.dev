@@ -1,12 +1,14 @@
-import { Link, Outlet, Route, Routes } from "react-router-dom";
+import { Link, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import CV from "./pages/CV";
 import CVPrint from "./pages/CVPrint";
 import About from "./pages/About";
 
-function Nav() {
+function Nav({ width }: { width: string }) {
   return (
-    <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 pt-10">
+    <nav
+      className={`mx-auto flex ${width} items-center justify-between px-6 pt-10`}
+    >
       <Link to="/" className="font-serif text-xl font-semibold">
         Reece&nbsp;Wall
       </Link>
@@ -28,13 +30,19 @@ function Nav() {
 // The site shell: nav + centred column + footer. A layout route — the matched
 // child page renders into <Outlet />.
 function Shell() {
+  // The CV mirrors the downloadable A4 document, so it gets a wider column than
+  // the prose pages; nav + footer widen with it so everything stays aligned.
+  const wide = useLocation().pathname === "/cv";
+  const width = wide ? "max-w-4xl" : "max-w-3xl";
   return (
     <div className="min-h-screen">
-      <Nav />
-      <main className="mx-auto max-w-3xl px-6 pb-20">
+      <Nav width={width} />
+      <main className={`mx-auto ${width} px-6 pb-20`}>
         <Outlet />
       </main>
-      <footer className="mx-auto max-w-3xl px-6 pb-12 text-center text-[11px] text-soft">
+      <footer
+        className={`mx-auto ${width} px-6 pb-12 text-center text-[11px] text-soft`}
+      >
         Built with Vite · React · Tailwind · deployed to AWS via Terraform &
         GitHub Actions
       </footer>

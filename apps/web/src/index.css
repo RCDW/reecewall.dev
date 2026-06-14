@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "@reecewall/tokens/tokens.css";
 
+/* Tailwind v4 auto-detects sources under apps/web only; our shared components
+   live in packages/ui, so scan them too — otherwise utilities used only there
+   (e.g. the Pill's bg-pill-bg / text-pill-ink) are never generated and render
+   as unstyled text. */
+@source "../../../packages/ui/src";
+
 /* Map brand tokens into Tailwind v4 so utilities like bg-paper / text-accent work. */
 @theme {
   --color-ink: #201d19;
