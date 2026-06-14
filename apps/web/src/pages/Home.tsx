@@ -1,7 +1,12 @@
 import { Pill, StatusBadge } from "@reecewall/ui";
 import { cv, projects } from "../data/cv";
+import { usePageMeta } from "../usePageMeta";
 
 export default function Home() {
+  usePageMeta(
+    "Reece Wall · Data Engineer",
+    "Reece Wall · Data Engineer. Azure, Databricks, SQL and Power BI. Live data projects, pipelines and dashboards.",
+  );
   return (
     <div className="pt-14">
       <header className="rise">

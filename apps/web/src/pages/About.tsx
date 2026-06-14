@@ -1,6 +1,11 @@
 import { cv } from "../data/cv";
+import { usePageMeta } from "../usePageMeta";
 
 export default function About() {
+  usePageMeta(
+    "About · Reece Wall",
+    "About Reece Wall, a data engineer in Nottingham building reliable pipelines and the interfaces that make them legible.",
+  );
   return (
     <div className="pt-14">
       <h1 className="font-serif text-3xl font-semibold">About</h1>
