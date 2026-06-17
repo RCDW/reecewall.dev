@@ -33,4 +33,9 @@ export interface ProjectCard {
   status: "live" | "in-dev" | "origin";
   href: string;
   tags: string[];
+  // Temporarily exclude from Selected Work without deleting the data. Remove the
+  // flag to restore the card.
+  hidden?: boolean;
+  // Open the card in the same tab instead of a new one (default: new tab).
+  sameTab?: boolean;
 }
