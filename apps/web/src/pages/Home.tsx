@@ -28,31 +28,33 @@ export default function Home() {
           Selected work <span className="h-px flex-1 bg-hair" />
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          {projects.map((p, i) => (
-            <a
-              key={p.slug}
-              href={p.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rise group rounded-xl border border-hair bg-white p-5 transition hover:border-accent"
-              style={{ animationDelay: `${i * 0.08}s` }}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-serif text-lg font-semibold group-hover:text-accent">
-                  {p.title}
-                </h3>
-                <StatusBadge status={p.status} />
-              </div>
-              <p className="mt-2 text-[13px] leading-relaxed text-muted">
-                {p.blurb}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {p.tags.map((t) => (
-                  <Pill key={t}>{t}</Pill>
-                ))}
-              </div>
-            </a>
-          ))}
+          {projects
+            .filter((p) => !p.hidden)
+            .map((p, i) => (
+              <a
+                key={p.slug}
+                href={p.href}
+                target={p.sameTab ? undefined : "_blank"}
+                rel={p.sameTab ? undefined : "noopener noreferrer"}
+                className="rise group rounded-xl border border-hair bg-white p-5 transition hover:border-accent"
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="font-serif text-lg font-semibold group-hover:text-accent">
+                    {p.title}
+                  </h3>
+                  <StatusBadge status={p.status} />
+                </div>
+                <p className="mt-2 text-[13px] leading-relaxed text-muted">
+                  {p.blurb}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {p.tags.map((t) => (
+                    <Pill key={t}>{t}</Pill>
+                  ))}
+                </div>
+              </a>
+            ))}
         </div>
       </section>
     </div>

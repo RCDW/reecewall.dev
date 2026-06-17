@@ -10,7 +10,9 @@ export const cv: CVData = {
   // Live-site profile links (About).
   links: [
     { label: "LinkedIn", href: "https://linkedin.com/in/reecewall" },
-    { label: "GitHub", href: "https://github.com/RCDW" },
+    // GitHub temporarily hidden until ready to make public. Restore to show it
+    // on the About page.
+    // { label: "GitHub", href: "https://github.com/RCDW" },
   ],
   // Links on the downloadable CV documents + web /cv. The site URL is the
   // controlled entry point; GitHub is intentionally omitted for now.
@@ -171,6 +173,7 @@ export const projects: ProjectCard[] = [
     status: "live",
     href: "https://live.reecewall.dev",
     tags: ["dbt", "DuckDB", "Azure", "DuckDB-WASM"],
+    sameTab: true,
   },
   {
     slug: "stitchers-tower",
@@ -180,6 +183,8 @@ export const projects: ProjectCard[] = [
     status: "in-dev",
     href: "https://github.com/RCDW/stitchers-tower",
     tags: ["TypeScript", "Postgres", "Redis", "BullMQ"],
+    // Temporarily hidden until ready to show publicly. Remove to restore.
+    hidden: true,
   },
   {
     slug: "word-grid-game",
@@ -189,5 +194,7 @@ export const projects: ProjectCard[] = [
     status: "origin",
     href: "https://play.reecewall.dev",
     tags: ["React", "Game"],
+    // Temporarily hidden until ready to show publicly. Remove to restore.
+    hidden: true,
   },
 ];
